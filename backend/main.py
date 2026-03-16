@@ -1,14 +1,10 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from backend.api.routes import router
 
-app = FastAPI(title="ELARA Backend")
+app = FastAPI(title="ELARA")
 
-class ChatRequest(BaseModel):
-    message: str
+app.include_router(router)
 
-class ChatResponse(BaseModel):
-    response: str
-
-@app.post("/api/chat", response_model=ChatResponse)
-def chat(request: ChatRequest):
-    return {"response": "ELARA backend connected successfully"}
+@app.get("/")
+def root():
+    return {"message": "ELARA backend running"}
