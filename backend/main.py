@@ -19,11 +19,12 @@ except Exception as e:
     print(f"Warning: Could not initialize embedder: {e}")
     embedder = None
 llm_gen = LLMGenerator()
+from fastapi import FastAPI
+from backend.api.routes import router
 
-app = FastAPI(title="ELARA Backend")
+app = FastAPI(title="ELARA")
 
-class ChatRequest(BaseModel):
-    message: str
+app.include_router(router)
 
 class ChatResponse(BaseModel):
     response: str
@@ -138,3 +139,6 @@ def get_system_metrics():
     metrics["total_feedback_received"] = len(feedback_manager.get_all_feedback())
     return metrics
 
+@app.get("/")
+def root():
+    return {"message": "ELARA backend running"}
