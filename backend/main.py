@@ -2,14 +2,22 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 
-from models import RecommendationRequest, RecommendationResponse, RecommendedItem, IngestionRequest, FeedbackRequest
-from embeddings import Embedder
-from vector_db import vector_db
-from llm_generator import LLMGenerator
-from ingestion import DataIngestionService
-from cache import query_cache
-from feedback import feedback_manager
-from metrics import app_metrics
+from backend.models import (
+    RecommendationRequest,
+    RecommendationResponse,
+    RecommendedItem,
+    IngestionRequest,
+    FeedbackRequest,
+    ChatRequest,
+    HealthResponse
+)
+from backend.embeddings import Embedder
+from backend.vector_db import vector_db
+from backend.llm_generator import LLMGenerator
+from backend.ingestion import DataIngestionService
+from backend.cache import query_cache
+from backend.feedback import feedback_manager
+from backend.metrics import app_metrics
 import time
 
 # Initialize subsystems
@@ -142,3 +150,19 @@ def get_system_metrics():
 @app.get("/")
 def root():
     return {"message": "ELARA backend running"}
+
+@app.get("/api/health", response_model=HealthResponse)
+def health_check():
+    """
+    Returns the health status of all major subsystems.
+    """
+    vector_db_ready = vector_db is not None and hasattr(vector_db, 'index')
+    embedder_ready = embedder is not None
+    
+    status = "healthy" if vector_db_ready and embedder_ready else "degraded"
+    
+    return HealthResponse(
+        status=status,
+        vector_db_ready=vector_db_ready,
+        embedder_ready=embedder_ready
+    )

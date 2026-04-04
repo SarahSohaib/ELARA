@@ -28,3 +28,14 @@ class FeedbackRequest(BaseModel):
     query: str
     rating: int
     comments: Optional[str] = ""
+
+class QueryRequest(BaseModel):
+    query: str
+
+class ChatRequest(BaseModel):
+    query: str
+
+class HealthResponse(BaseModel):
+    status: str
+    vector_db_ready: bool
+    embedder_ready: bool
