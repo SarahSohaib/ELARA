@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { fetchRecommendations } from "./api";
 
 const SAMPLE_RECOMMENDATIONS = [
   {
@@ -189,24 +190,14 @@ export default function App() {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/recommend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: query,
-      }),
-    });
-
-    const data = await response.json();
-
-    // 🔥 IMPORTANT: match backend structure
-    setRecs(data.recommendations || []);
+    const recommendations = await fetchRecommendations({ query, mood, genre, era });
+    console.log('Setting recommendations:', recommendations);
+    setRecs(recommendations);
     setPhase("results");
-
+    console.log('Phase set to results, recs length:', recommendations.length);
   } catch (error) {
     console.error("Backend error:", error);
+    setStatusMsg("Error: Unable to fetch recommendations. Check backend connection.");
     setPhase("idle");
   }
 };
@@ -414,13 +405,13 @@ export default function App() {
               <span className="results-count">{recs.length} results</span>
             </div>
             {recs.map((item, i) => (
-              <RecommendationCard key={item.id} item={item} index={i} />
+              <RecommendationCard key={item.id || `rec-${i}`} item={item} index={i} />
             ))}
           </div>
         )}
 
         <footer className="footer">
-          ELARA · Built by <span>Priyanshi</span> · LLM + RAG Recommendation Engine
+          ELARA · LLM + RAG Recommendation Engine
         </footer>
       </div>
     </>

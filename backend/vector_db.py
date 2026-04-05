@@ -60,13 +60,14 @@ class VectorDBClient:
 vector_db = VectorDBClient()
 
 # Example mock data initialization for cold-start demo
-mock_data = [
-    {"id": "1", "title": "Sci-Fi Noir", "description": "A dark, gritty detective story set in a dystopian future."},
-    {"id": "2", "title": "Fantasy Epic", "description": "A grand tale of magic, kingdoms, and ancient dragons."},
-    {"id": "3", "title": "Romantic Comedy", "description": "A lighthearted story about two rivals falling in love."}
-]
+# Commented out to use real CSV data instead
+# mock_data = [
+#     {"id": "1", "title": "Sci-Fi Noir", "description": "A dark, gritty detective story set in a dystopian future."},
+#     {"id": "2", "title": "Fantasy Epic", "description": "A grand tale of magic, kingdoms, and ancient dragons."},
+#     {"id": "3", "title": "Romantic Comedy", "description": "A lighthearted story about two rivals falling in love."}
+# ]
 
 # Note: In a real scenario, you'd load the embeddings generated from `embeddings.py` here.
 # For simplicity, we initialize mock embeddings if real ones aren't available immediately.
-mock_embeddings = np.random.rand(3, 384).astype('float32')
-vector_db.add_items(mock_embeddings, mock_data)
+# mock_embeddings = np.random.rand(3, 384).astype('float32')
+# vector_db.add_items(mock_embeddings, mock_data)

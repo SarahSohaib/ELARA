@@ -32,7 +32,7 @@ app.add_middleware(
 )
 
 # Include routes
-#app.include_router(router)
+app.include_router(router)
 
 # Initialize subsystems
 try:
@@ -42,6 +42,14 @@ except Exception as e:
     embedder = None
 
 llm_gen = LLMGenerator()
+
+# Initialize data ingestion and load CSV data
+data_ingestion = DataIngestionService(embedder)
+if embedder:
+    ingestion_result = data_ingestion.load_and_ingest_csv()
+    print(f"Data ingestion result: {ingestion_result}")
+else:
+    print("Embedder not initialized, skipping data ingestion")
 
 
 # ✅ SIMPLE TEST ENDPOINT
