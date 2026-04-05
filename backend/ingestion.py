@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
-from vector_db import vector_db
-from embeddings import Embedder
+from backend.vector_db import vector_db
+from backend.embeddings import Embedder
 
 class DataIngestionService:
     def __init__(self, embedder: Embedder):

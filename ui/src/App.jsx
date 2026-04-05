@@ -171,22 +171,45 @@ export default function App() {
   const eras = ["Any", "Classic (pre-1980)", "80s–90s", "2000s", "2010s", "Recent (2020+)"];
 
   const handleSubmit = async () => {
-    if (!query.trim()) return;
-    setPhase("thinking");
-    setRecs([]);
-    const steps = [
-      "Embedding your query…",
-      "Searching vector database…",
-      "Retrieving semantic matches…",
-      "Generating explanations via LLM…",
-    ];
-    for (let i = 0; i < steps.length; i++) {
-      setStatusMsg(steps[i]);
-      await new Promise((r) => setTimeout(r, 700));
-    }
-    setRecs(SAMPLE_RECOMMENDATIONS);
+  if (!query.trim()) return;
+
+  setPhase("thinking");
+  setRecs([]);
+
+  const steps = [
+    "Embedding your query…",
+    "Searching vector database…",
+    "Retrieving semantic matches…",
+    "Generating explanations via LLM…",
+  ];
+
+  for (let i = 0; i < steps.length; i++) {
+    setStatusMsg(steps[i]);
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/recommend", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: query,
+      }),
+    });
+
+    const data = await response.json();
+
+    // 🔥 IMPORTANT: match backend structure
+    setRecs(data.recommendations || []);
     setPhase("results");
-  };
+
+  } catch (error) {
+    console.error("Backend error:", error);
+    setPhase("idle");
+  }
+};
 
   const handleReset = () => {
     setPhase("idle");
@@ -403,7 +426,3 @@ export default function App() {
     </>
   );
 }
-<<<<<<< HEAD:src/App.jsx
-=======
-
->>>>>>> b00e93e4a433aaf681ab324ec8a2800c6e5edeb7:ui/src/App.jsx
