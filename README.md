@@ -1,13 +1,18 @@
-# ELARA Frontend 🎯
+# ELARA 🎯
 
-**Explainable, Context-Aware Recommendation Engine**  
-UI/UX built by **Priyanshi** · Role: UI, UX & System Integration Engineer
+**Explainable, Context-Aware Recommendation Engine**
+
+Built using **React + FastAPI + RAG (Retrieval-Augmented Generation)**
+UI/UX by **Priyanshi** · Backend & Architecture by **Sarah** · Data by **Adyasha**
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Frontend)
 
 ```bash
+# Navigate to frontend
+cd ui
+
 # Install dependencies
 npm install
 
@@ -19,110 +24,241 @@ npm run dev
 npm run build
 ```
 
----
+---S
 
 ## 📁 Project Structure
 
 ```
-elara-frontend/
-├── index.html              # HTML entry point
-├── vite.config.js          # Vite + proxy config (routes /api → backend)
-├── package.json
-└── src/
-    ├── main.jsx            # React root
-    ├── App.jsx             # Main UI component (all screens)
-    └── api.js              # Backend API integration layer
+ELARA/
+├── backend/              # FastAPI backend (RAG + APIs)
+├── ui/                  # React frontend
+│   ├── index.html
+│   ├── vite.config.js   # Proxy config (/api → backend)
+│   ├── package.json
+│   └── src/
+│       ├── main.jsx
+│       ├── App.jsx
+│       └── api.js
+├── data/
+│   └── data.csv         # Dataset used for recommendations
 ```
 
 ---
 
-## 🔌 Connecting to Backend (Sarah's API)
+## 🔌 System Architecture
 
-When Sarah's FastAPI backend is running:
-
-1. Open `src/App.jsx`
-2. Find the comment block `// In production: replace with real API call`
-3. Replace the mock delay with:
-
-```js
-import { fetchRecommendations } from "./api";
-
-// Inside handleSubmit():
-const results = await fetchRecommendations({ query, mood, genre, era });
-setRecs(results);
+```
+User Input → React UI → API Call → FastAPI Backend → Data / RAG → Response → UI Render
 ```
 
-The backend should expose:
-- `POST /recommend` → `{ recommendations: [...] }`
-- `GET /health` → `{ status: "ok" }`
+---
 
-The Vite proxy in `vite.config.js` already routes `/api/*` → `localhost:8000`.
+## 🔁 Frontend–Backend Integration
+
+### Development Mode
+
+Vite proxy automatically routes:
+
+```
+/api → http://localhost:8000
+```
+
+---
+
+### Production Mode
+
+Update API calls in `App.jsx`:
+
+```js
+fetch("https://your-backend.onrender.com/api/recommend")
+```
+
+---
+
+## 📡 API Contract
+
+### POST `/api/recommend`
+
+Request:
+
+```json
+{
+  "query": "string"
+}
+```
+
+Response:
+
+```json
+{
+  "recommendations": [
+    {
+      "id": 1,
+      "title": "string",
+      "type": "Movie",
+      "year": 2020,
+      "tags": ["string"],
+      "score": 90,
+      "explanation": "string"
+    }
+  ]
+}
+```
+
+---
+
+### GET `/api/health`
+
+```json
+{ "status": "ok" }
+```
 
 ---
 
 ## 🎨 UI Features
 
-| Feature | Status |
-|---|---|
-| Natural language query input | ✅ |
-| Mood / Genre / Era filters | ✅ |
-| Animated loading + RAG pipeline visualization | ✅ |
-| Recommendation cards with match score | ✅ |
-| Expandable explanation panel (LLM-generated) | ✅ |
-| Responsive layout | ✅ |
-| Reset / new search flow | ✅ |
+| Feature                         | Status |
+| ------------------------------- | ------ |
+| Natural language query input    | ✅      |
+| Mood / Genre / Era filters      | ✅      |
+| RAG pipeline visualization      | ✅      |
+| Recommendation cards with score | ✅      |
+| Expandable explanation panel    | ✅      |
+| Responsive layout               | ✅      |
+| Reset / new search flow         | ✅      |
 
 ---
 
-## 📋 GitHub Commit Strategy (Priyanshi)
+## 🧠 Core Capabilities
 
-Use this pattern for **all commits**:
+* Context-aware recommendations using natural language queries
+* Explainable outputs powered by LLM logic
+* Data-driven filtering via dataset (`data.csv`)
+* Modular full-stack architecture
+* Designed for extensibility into full RAG pipeline
+
+---
+
+## 📊 Data Layer
+
+* Dataset stored in: `data/data.csv`
+* Used for:
+
+  * Filtering and matching user queries
+  * Generating recommendations
+* Prepared and cleaned before backend ingestion
+
+---
+
+## 📋 Git Commit Strategy
 
 ```
 feat(ui): add recommendation card with score ring
 fix(ui): handle empty state when no results returned
-style(ui): polish filter dropdowns and spacing
-chore: add api.js integration layer for backend connection
-docs: update README with setup instructions
+style(ui): polish filters and layout
+chore: add API integration layer
+docs: update README
 ```
 
-### Suggested commit sequence to push now:
+---
 
-```bash
-git checkout -b feat/priyanshi-ui-core
+## 👤 Team Roles
 
-git add src/App.jsx
-git commit -m "feat(ui): build ELARA main interface with query input and filters"
+### 🔹 Sarah — Project Lead, Backend Engineer & Repository Owner
 
-git add src/api.js
-git commit -m "feat(ui): add API integration layer for backend connection"
+* Defines overall system architecture
+* Implements RAG pipeline and LLM integration
+* Designs and develops backend APIs (FastAPI)
+* Handles recommendation and explanation logic
+* Implements embeddings, vector database, and retrieval logic
+* Performs retrieval tuning and evaluation
+* Manages GitHub repository (branching, structure, commits)
+* Leads system integration and ensures frontend-backend connectivity
+* Prepares architecture explanation and viva
 
-git add index.html vite.config.js package.json
-git commit -m "chore: setup Vite React project with proxy config for backend"
+👉 Owns: **Backend + RAG + Retrieval + Logic + Integration**
 
-git add README.md
-git commit -m "docs: add frontend setup guide and commit strategy"
+---
 
-git push origin feat/priyanshi-ui-core
-# → Open PR to main
-```
+### 🔹 Adyasha — Data Engineer
+
+* Dataset sourcing and validation
+* Data cleaning and preprocessing
+* Data formatting and structuring for ingestion
+* Preparing datasets for embedding and backend usage
+* Maintaining dataset consistency and documentation
+
+👉 Owns: **Data Preparation Layer**
+
+---
+
+### 🔹 Priyanshi — UI, UX & System Integration Engineer
+
+* Designs and implements user interface
+* Builds query input and recommendation display
+* Develops explanation UI
+* Handles frontend–backend API integration
+* Manages UX flow and usability
+* Implements error handling and empty states
+* Prepares demo-ready interface
+
+👉 Owns: **User Experience + Frontend + Integration Layer**
 
 ---
 
 ## 🧠 Course Outcome Alignment
 
-- **CO4**: Advanced LLM + RAG application integration (frontend layer)  
-- **CO1**: DevOps practices — Git branching, meaningful commits, CI-ready build
+* **CO4**: Implementation of advanced LLM + RAG system + VectorDB
+* **CO1**: Application of DevOps practices (Git, modular architecture)
 
 ---
 
-## 👤 Role: UI, UX & System Integration Engineer
+## 🚀 Deployment Overview
 
-**Priyanshi** is responsible for:
-- ✅ Query input & recommendation display UI
-- ✅ Explanation display panel
-- ✅ UX flow and usability
-- ✅ Frontend–backend integration (`api.js`)
-- ✅ Error handling and empty states
-- ✅ Demo readiness
-Contribution by Priyanshi
+| Component | Platform              |
+| --------- | --------------------- |
+| Frontend  | GitHub Pages / Vercel |
+| Backend   | Render / Railway      |
+| Data      | CSV / Vector DB       |
+
+---
+
+## ⚠️ Important Notes
+
+* GitHub Pages hosts only the frontend (static files)
+* Backend must be deployed separately
+* Replace all `localhost` API calls before deployment
+
+---
+
+## 🎯 Project Goal
+
+ELARA is designed to move beyond traditional recommendation systems by providing:
+
+* Explainable recommendations (not black-box output)
+* Context-aware reasoning based on user input
+* Integration of retrieval + generation (RAG concept)
+* A clean, intuitive user interface
+
+---
+
+## 👥 Contribution Summary
+
+| Member    | Contribution                             |
+| --------- | ---------------------------------------- |
+| Sarah     | Backend, RAG pipeline, API, architecture |
+| Adyasha   | Data preparation, dataset pipeline       |
+| Priyanshi | UI, UX, frontend integration             |
+
+---
+
+## 🔥 Final Note
+
+ELARA demonstrates a complete **AI-powered full-stack system**, combining:
+
+* React frontend
+* FastAPI backend
+* Data pipeline
+* Explainable recommendation logic
+
+---
