@@ -2,24 +2,28 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import time
 from fastapi.middleware.cors import CORSMiddleware
+import sys
+import os
 
+# Add the current directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # ✅ FIXED IMPORTS (direct, no __init__ dependency)
-from backend.models.query_model import QueryRequest
+from models.query_model import QueryRequest
 
 # (Keep others ONLY if they exist properly, else comment for now)
 # from backend.models.response_model import RecommendationResponse, RecommendedItem
 # from backend.models.other_models import IngestionRequest, FeedbackRequest, ChatRequest, HealthResponse
 
-from backend.embeddings import Embedder
-from backend.vector_db import vector_db
-from backend.llm_generator import LLMGenerator
-from backend.ingestion import DataIngestionService
-from backend.cache import query_cache
-from backend.feedback import feedback_manager
-from backend.metrics import app_metrics
+from embeddings import Embedder
+from vector_db import vector_db
+from llm_generator import LLMGenerator
+from ingestion import DataIngestionService
+from cache import query_cache
+from feedback import feedback_manager
+from metrics import app_metrics
 
-from backend.api.routes import router
+from api.routes import router
 
 # Initialize FastAPI
 app = FastAPI(title="ELARA")
