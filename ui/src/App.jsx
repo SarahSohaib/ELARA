@@ -403,3 +403,7 @@ export default function App() {
     </>
   );
 }
+<<<<<<< HEAD:src/App.jsx
+=======
+
+>>>>>>> b00e93e4a433aaf681ab324ec8a2800c6e5edeb7:ui/src/App.jsx
