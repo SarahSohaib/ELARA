@@ -1,6 +1,6 @@
 # ELARA 🎯
 
-**Explainable, Context-Aware Recommendation Engine**
+**ELARA – Explainable Language-Driven AI-Based Recommendation Assistant**
 
 Built using **React + FastAPI + RAG (Retrieval-Augmented Generation)**
 UI/UX by **Priyanshi** · Backend & Architecture by **Sarah** · Data by **Adyasha**
